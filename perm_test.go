@@ -40,7 +40,7 @@ func TestSJTRecursive(t *testing.T) {
 		if i > 1 {
 			fact *= i
 		}
-		p := perm.Ints(i)          // create a slice to permute
+		p := perm.NewZPerm(i)      // create a slice to permute
 		it := perm.SJTRecursive(p) // create iterator to test
 		n := 0                     // count for checking number of permutations
 		m := map[string]bool{}     // map for checking uniqueness
@@ -62,11 +62,11 @@ func TestSJTRecursive(t *testing.T) {
 }
 
 func BenchmarkSJTR_5(b *testing.B) {
-	bsjt(b, perm.Ints(5))
+	bsjt(b, perm.NewZPerm(5))
 }
 
 func BenchmarkSJTR_10(b *testing.B) {
-	bsjt(b, perm.Ints(10))
+	bsjt(b, perm.NewZPerm(10))
 }
 
 func bsjt(b *testing.B, p []int) {
@@ -81,7 +81,7 @@ func bsjt(b *testing.B, p []int) {
 }
 
 func ExampleLexNext() {
-	p := perm.Ints(3)
+	p := perm.NewZPerm(3)
 	fmt.Println(p)
 	for perm.LexNext(p) {
 		fmt.Println(p)
@@ -121,7 +121,7 @@ func BenchmarkLexNext_5(b *testing.B) {
 	var p []int
 	for i := 0; i < b.N; i++ {
 		if !ok {
-			p = perm.Ints(5)
+			p = perm.NewZPerm(5)
 		}
 		ok = perm.LexNext(p)
 	}
@@ -132,7 +132,7 @@ func BenchmarkLexNext_10(b *testing.B) {
 	var p []int
 	for i := 0; i < b.N; i++ {
 		if !ok {
-			p = perm.Ints(10)
+			p = perm.NewZPerm(10)
 		}
 		ok = perm.LexNext(p)
 	}
