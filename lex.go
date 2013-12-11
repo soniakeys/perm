@@ -53,7 +53,12 @@ func log2(x int) (n uint) {
 	return n
 }
 
+// LexRank returns rank of p relative to lexicographic order.
+//
+// Time complexity claimed by algorithm authors is O(n log n) in len(p).
 func (p ZPerm) LexRank() *big.Int {
+	// Ref. Blai Bonet. "Efficient Algorithms to Rank and Unrank Permutations
+	// in Lexicographic Order", Blai Bonet.
 	k := log2(len(p))
 	t := make([]int, 1<<(k+1))
 	var r, b big.Int
@@ -73,7 +78,13 @@ func (p ZPerm) LexRank() *big.Int {
 	return &r
 }
 
+// LexPerm creates the permutation of n integers with rank i relative to
+// lexicographic order.
+//
+// Time complexity claimed by algorithm authors is O(n log n) in len(p).
 func LexPerm(i *big.Int, n int) (ZPerm, bool) {
+	// Ref. Blai Bonet. "Efficient Algorithms to Rank and Unrank Permutations
+	// in Lexicographic Order", Blai Bonet.
 	fmt.Println("LexPerm i, n:", i, n)
 	f, ok := NewFact(i, n)
 	if !ok {

@@ -38,9 +38,10 @@ func (p ZPerm) Inverse() ZPerm {
 
 // Fact represents a non-negative integer as a "factoradic" or Lehmer code.
 //
-// Slice index i corresponds to place value (i+1)! and the i-th element
-// must be in the range 0..(i+2).  For a Fact of length n, the largest
-// representable integer is (n+1)!-1.
+// Representation is a place value number system where slice index i
+// corresponds to place value (i+1)! and the i-th element must be in
+// the range 0..(i+2).  For a Fact of length n, the largest representable
+// integer is (n+1)!-1.
 type Fact []int
 
 // String formats f with the most significant digit first and with a trailing
@@ -115,14 +116,21 @@ func (f Fact) Int() *big.Int {
 	return s
 }
 
+// Perm creates the permutation corresponding to f.
+//
+// A new ZPerm is allocated and returned.
 func (f Fact) Perm() ZPerm {
-	p := make(ZPerm, len(f) + 1)
+	p := make(ZPerm, len(f)+1)
 	setzf(p, f)
 	return p
 }
 
+// SetFact sets p to the permutation corresponding to f.
+//
+// P and f must be compatible sizes, that is, len(p) must equal len(f) + 1.
+// SetFact returns false if sizes are incompatible.
 func (p ZPerm) SetFact(f Fact) bool {
-	if len(p) != len(f) + 1 {
+	if len(p) != len(f)+1 {
 		return false
 	}
 	setzf(p, f)
@@ -134,7 +142,7 @@ func setzf(p ZPerm, f Fact) {
 	for i := range p {
 		p[i] = i
 	}
-	last := len(f)-1
+	last := len(f) - 1
 	for i := range f {
 		dx := i + f[last-i]
 		item := p[dx]

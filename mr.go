@@ -7,6 +7,13 @@ import (
 	"math/big"
 )
 
+// MRPerm creates the permutation of n integers with rank i relative to
+// the order described by Myrvold and Ruskey in "Ranking and Unranking
+// Permutations in Linear Time."
+//
+// While M&R claim time complexity of O(n), that would only seem true with
+// constant time arithmetic on i.  Allowing time for big.Int arithmetic,
+// I suspect time complexity is O(n log n).
 func MRPerm(n int, i *big.Int) ZPerm {
 	p := NewZPerm(n)
 	var quo, rem, b big.Int
@@ -19,6 +26,12 @@ func MRPerm(n int, i *big.Int) ZPerm {
 	return p
 }
 
+// MRRank returns rank of p relative to the order described by Myrvold and
+// Ruskey in "Ranking and Unranking Permutations in Linear Time."
+//
+// While M&R claim time complexity of O(n), that would only seem true with
+// constant time arithmetic on i.  Allowing time for big.Int arithmetic,
+// I suspect time complexity is O(n log n).
 func (p ZPerm) MRRank() *big.Int {
 	p = append(ZPerm{}, p...)
 	inv := p.Inverse()
