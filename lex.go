@@ -1,8 +1,6 @@
 // Copyright 2013 Sonia Keys
 // License MIT: http://www.opensource.org/licenses/MIT
 
-// Package permute has functions to generate permutations.  And other related
-// functions
 package perm
 
 import (
@@ -11,10 +9,17 @@ import (
 )
 
 // LexNext takes a slice p and reorders it in place to generate the next
-// permutation in lexicographic order.  For a slice with duplicate values,
-// distinct multiset permutations are produced.  The function returns true
-// when it produces a new permutation.  If p represents the last permutation
-// in lexicographic order, it is left unmodified and the function returns false.
+// permutation in lexicographic order.
+//
+// The item at index 0 is considered most significant.
+//
+// Note the slice does not have to be a ZPerm and items do not even have
+// to be distinct.  For a slice with duplicate values, distinct multiset
+// permutations are produced.
+//
+// The function returns true when it produces a new permutation.
+// If p represents the last permutation in lexicographic order, it is
+// left unmodified and the function returns false.
 func LexNext(p []int) bool {
 	if len(p) <= 1 {
 		return false
@@ -68,9 +73,12 @@ func (p ZPerm) LexRank() *big.Int {
 	return &r
 }
 
-func LexPerm(i *big.Int, n int) ZPerm {
+func LexPerm(i *big.Int, n int) (ZPerm, bool) {
 	fmt.Println("LexPerm i, n:", i, n)
-	f := NewFact(i, n)
+	f, ok := NewFact(i, n)
+	if !ok {
+		return nil, false
+	}
 	fmt.Println("LexPerm f:", f)
 	p := make(ZPerm, n)
 	k := log2(n)
@@ -102,5 +110,5 @@ func LexPerm(i *big.Int, n int) ZPerm {
 		nd += 1 - t[nd]
 	}
 	p[len(f)] = nd - k2
-	return p
+	return p, true
 }
