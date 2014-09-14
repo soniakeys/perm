@@ -26,7 +26,7 @@ func NewZPerm(n int) ZPerm {
 
 // Inverse returns the inverse of a permutation.
 //
-// It returns the permutation where eaach element is its position in
+// It returns the permutation where each element is its position in
 // the original permutation p.
 func (p ZPerm) Inverse() ZPerm {
 	v := make(ZPerm, len(p))
