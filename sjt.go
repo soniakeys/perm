@@ -1,8 +1,6 @@
 // Copyright 2013 Sonia Keys
 // License MIT: http://www.opensource.org/licenses/MIT
 
-// Package permute has functions to generate permutations.  And other related
-// functions
 package perm
 
 // SJTRecursive generates permutations in the order of
