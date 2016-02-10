@@ -6,21 +6,22 @@ package perm
 import (
 	"fmt"
 	"math/big"
+	"sort"
 )
 
-// LexNext takes a slice p and reorders it in place to generate the next
-// permutation in lexicographic order.
+// LexNextInt takes an int slice p and reorders it in place to generate the
+// next permutation in lexicographic order.
 //
 // The item at index 0 is considered most significant.
 //
-// Note the slice does not have to be a ZPerm and items do not even have
-// to be distinct.  For a slice with duplicate values, distinct multiset
-// permutations are produced.
+// The slice can be a ZPerm but note the slice does not have to be a ZPerm
+// and items do not even have to be distinct.  For a slice with duplicate
+// values, distinct multiset permutations are produced.
 //
 // The function returns true when it produces a new permutation.
 // If p represents the last permutation in lexicographic order, it is
 // left unmodified and the function returns false.
-func LexNext(p []int) bool {
+func LexNextInt(p []int) bool {
 	if len(p) <= 1 {
 		return false
 	}
@@ -37,6 +38,38 @@ func LexNext(p []int) bool {
 	p[k], p[l] = p[l], p[k]
 	for l, r := k+1, last; l < r; l, r = l+1, r-1 {
 		p[l], p[r] = p[r], p[l]
+	}
+	return true
+}
+
+// LexNextSort takes a value satisfying sort.Interface and reorders it in place
+// to generate the next permutation in lexicographic order.
+//
+// The item at index 0 is considered most significant.
+//
+// Argument elements do not have to be distinct.  For an argument with duplicate
+// element values, distinct multiset permutations are produced.
+//
+// The function returns true when it produces a new permutation.
+// If p represents the last permutation in lexicographic order, it is
+// left unmodified and the function returns false.
+func LexNextSort(p sort.Interface) bool {
+	if p.Len() <= 1 {
+		return false
+	}
+	last := p.Len() - 1
+	k := last - 1
+	for ; !p.Less(k, k+1); k-- {
+		if k == 0 {
+			return false
+		}
+	}
+	l := last
+	for ; !p.Less(k, l); l-- {
+	}
+	p.Swap(k, l)
+	for l, r := k+1, last; l < r; l, r = l+1, r-1 {
+		p.Swap(l, r)
 	}
 	return true
 }

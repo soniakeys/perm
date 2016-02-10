@@ -5,6 +5,7 @@ package perm_test
 
 import (
 	"fmt"
+	"sort"
 	"testing"
 
 	"github.com/soniakeys/perm"
@@ -80,10 +81,10 @@ func bsjt(b *testing.B, p []int) {
 	}
 }
 
-func ExampleLexNext() {
+func ExampleLexNextInt() {
 	p := perm.NewZPerm(3)
 	fmt.Println(p)
-	for perm.LexNext(p) {
+	for perm.LexNextInt(p) {
 		fmt.Println(p)
 	}
 	// Output:
@@ -95,10 +96,10 @@ func ExampleLexNext() {
 	// [2 1 0]
 }
 
-func ExampleLexNext_multiset() {
+func ExampleLexNextInt_multiset() {
 	p := []int{0, 3, 3, 7}
 	fmt.Println(p)
-	for perm.LexNext(p) {
+	for perm.LexNextInt(p) {
 		fmt.Println(p)
 	}
 	// Output:
@@ -116,6 +117,21 @@ func ExampleLexNext_multiset() {
 	// [7 3 3 0]
 }
 
+func ExampleLexNextSort() {
+	p := sort.StringSlice{"blue", "green", "red"}
+	fmt.Println(p)
+	for perm.LexNextSort(p) {
+		fmt.Println(p)
+	}
+	// Output:
+	// [blue green red]
+	// [blue red green]
+	// [green blue red]
+	// [green red blue]
+	// [red blue green]
+	// [red green blue]
+}
+
 func BenchmarkLexNext_5(b *testing.B) {
 	ok := false
 	var p []int
@@ -123,7 +139,7 @@ func BenchmarkLexNext_5(b *testing.B) {
 		if !ok {
 			p = perm.NewZPerm(5)
 		}
-		ok = perm.LexNext(p)
+		ok = perm.LexNextInt(p)
 	}
 }
 
@@ -134,7 +150,7 @@ func BenchmarkLexNext_10(b *testing.B) {
 		if !ok {
 			p = perm.NewZPerm(10)
 		}
-		ok = perm.LexNext(p)
+		ok = perm.LexNextInt(p)
 	}
 }
 
